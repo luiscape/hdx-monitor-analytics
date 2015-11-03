@@ -1,0 +1,46 @@
+#################################################################################
+#
+#  HDX INTERNAL ANALYTICS:
+#
+#  Databases:
+#   - PostgreSQL
+#
+#  Services:
+#   - SQL Collect: collects data from HDX, organizes it, and stores in database.
+#   - Metabase: Metabase application that connects to database.
+#
+##################################################################################
+
+#
+# Database.
+#
+postgres:
+  tty: true
+  image: redis:latest
+  stdin_open: true
+
+#
+# Collector.
+#
+collector:
+  tty: true
+  image: luiscape/hdx-monitor-sql-collect:v.0.1.0
+  stdin_open: true
+  ports:
+  - "2010:2010"
+  links:
+  - "postgres:postgres"
+  environment:
+    CKAN_KEY: xxxx-xxxx-xxxxx-xxxx-xxx
+
+#
+# Metabase.
+#
+metabase:
+  tty: true
+  image: metabase/metabase:latest
+  stdin_open: true
+  ports:
+  - "4000:3000"
+  links:
+  - "postgres:postgres"
