@@ -1,6 +1,6 @@
 #################################################################################
 #
-#  HDX INTERNAL ANALYTICS:
+#  HDX MONITOR ANALYTICS:
 #
 #  Databases:
 #   - PostgreSQL
@@ -31,6 +31,7 @@ collector:
   links:
   - "postgres:postgres"
   environment:
+    CKAN_URL: https://data.hdx.rwlabs.org
     CKAN_KEY: xxxx-xxxx-xxxxx-xxxx-xxx
 
 #
