@@ -40,6 +40,9 @@ collector:
   environment:
     CKAN_URL: https://data.hdx.rwlabs.org
     CKAN_KEY: xxxx-xxxx-xxxxx-xxxx-xxx
+    DB_NAME: 'foo'
+    DB_USER: 'foo'
+    DB_PASSWORD: 'foo'
 
 #
 # Metabase.
