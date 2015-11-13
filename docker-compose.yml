@@ -1,22 +1,28 @@
-#################################################################################
-#
-#  HDX MONITOR ANALYTICS:
-#
-#  Databases:
-#   - PostgreSQL
-#
-#  Services:
-#   - SQL Collect: collects data from HDX, organizes it, and stores in database.
-#   - Metabase: Metabase application that connects to database.
-#
-##################################################################################
+#####################################################################################
+#                                                                                   #
+#  HDX MONITOR ANALYTICS:                                                           #
+#                                                                                   #
+#  Databases:                                                                       #
+#   - PostgreSQL                                                                    #
+#   - Redis                                                                         #
+#                                                                                   #
+#  Services:                                                                        #
+#   - SQL Collect: collects data from HDX, organizes it, and stores in database.    #
+#   - Metabase: Metabase application that connects to database.                     #
+#                                                                                   #
+#####################################################################################
 
 #
-# Database.
+# Databases.
 #
-postgres:
+redis:
   tty: true
   image: redis:latest
+  stdin_open: true
+
+postgres:
+  tty: true
+  image: luiscape/hdx-monitor-postgresql:latest
   stdin_open: true
 
 #
@@ -24,12 +30,13 @@ postgres:
 #
 collector:
   tty: true
-  image: luiscape/hdx-monitor-sql-collect:v.0.1.0
+  image: luiscape/hdx-monitor-analytics-collect:v.0.1.0
   stdin_open: true
   ports:
-  - "2010:2010"
+  - "5000:5000"
   links:
   - "postgres:postgres"
+  - "redis:redis"
   environment:
     CKAN_URL: https://data.hdx.rwlabs.org
     CKAN_KEY: xxxx-xxxx-xxxxx-xxxx-xxx
@@ -42,6 +49,6 @@ metabase:
   image: metabase/metabase:latest
   stdin_open: true
   ports:
-  - "4000:3000"
+  - "8400:3000"
   links:
   - "postgres:postgres"
